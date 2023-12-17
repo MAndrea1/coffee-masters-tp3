@@ -51,7 +51,9 @@ fun App(dataManager: DataManager) {
                 when (currentPage.value) {
                     "menu" -> MenuPage(dataManager)
                     "offers" -> OffersPage()
-                    "order" -> OrderPage(dataManager)
+                    "order" -> OrderPage(dataManager, goToMenu = {
+                        currentPage.value = it
+                    })
                     "info" -> InfoPage()
                 }
             }
