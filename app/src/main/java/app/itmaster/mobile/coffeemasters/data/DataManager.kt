@@ -36,6 +36,18 @@ open class DataManager: ViewModel() {
     }
 
     fun cartRemove(product: Product) {
-        //TODO
+        val updatedCart = cart.toMutableList()
+        val existingItem = updatedCart.find { it.product == product }
+
+        if (existingItem != null) {
+            if (existingItem.quantity > 1) {
+                existingItem.quantity -= 1
+            } else {
+                updatedCart.remove(existingItem)
+            }
+        }
+
+        cart = updatedCart
+        println(cart)
     }
 }

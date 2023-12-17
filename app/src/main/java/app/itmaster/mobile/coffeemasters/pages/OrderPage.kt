@@ -47,7 +47,7 @@ fun OrderPage(dataManager: DataManager, goToMenu: (String)->Unit) {
                     color = MaterialTheme.colorScheme.primary)
                 LazyColumn{
                     itemsIndexed(dataManager.cart) { index, item ->
-                        OrderCard(item, index-1)
+                        OrderCard(item, index-1, dataManager::cartRemove)
                     }
                 }
         } else {
@@ -81,7 +81,7 @@ fun OrderPage(dataManager: DataManager, goToMenu: (String)->Unit) {
 }
 
 @Composable
-fun OrderCard(item: ItemInCart, index: Int) {
+fun OrderCard(item: ItemInCart, index: Int, onRemove: (Product) -> Unit) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
@@ -108,6 +108,9 @@ fun OrderCard(item: ItemInCart, index: Int) {
                 modifier = Modifier
                     .padding(0.dp, 0.dp, 0.dp, 1.dp)
                     .size(24.dp)
+                    .clickable {
+                        onRemove(item.product)
+                    }
             )
         }
     }
