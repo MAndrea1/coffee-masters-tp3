@@ -60,7 +60,8 @@ fun OrderCard(item: ItemInCart, index: Int) {
         Text("${item.quantity}x",
             color = MaterialTheme.colorScheme.primary)
         Spacer(modifier = Modifier.size(10.dp))
-        Text("${item.product.name}",
+        Text(
+            item.product.name,
             color = Color.Black)
         }
         Row()
@@ -91,7 +92,7 @@ fun OrderCard(item: ItemInCart, index: Int) {
 @Composable
 private fun OrderPage_Preview() {
     val mockDataManager = MockDataManager()
-    OrderPage(mockDataManager);
+    OrderPage(mockDataManager)
 }
 
 class MockDataManager: DataManager() {

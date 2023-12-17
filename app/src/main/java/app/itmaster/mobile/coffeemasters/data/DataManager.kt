@@ -25,8 +25,13 @@ open class DataManager: ViewModel() {
     }
 
     fun cartAdd(product: Product) {
-        //TODO: Falta verificar si el producto ya está en el carrito y sumarle uno
-        cart = cart + ItemInCart(product, 1)
+        val existingItem = cart.find { it.product == product }
+
+        if (existingItem != null) {
+            existingItem.quantity += 1
+        } else {
+            cart = cart + ItemInCart(product, 1)
+        }
         println(cart)
     }
 
