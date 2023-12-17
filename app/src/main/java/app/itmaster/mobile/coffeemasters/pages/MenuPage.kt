@@ -54,7 +54,6 @@ fun MenuPage(dataManager: DataManager) {
             CircularProgressIndicator(
                 modifier = Modifier.width(64.dp),
                 color = MaterialTheme.colorScheme.secondary,
-
             )
         }
 

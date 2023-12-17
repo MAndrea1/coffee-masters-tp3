@@ -9,9 +9,9 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-class DataManager: ViewModel() {
+open class DataManager: ViewModel() {
     var menu: List<Category> by mutableStateOf(listOf())
-    var cart: List<ItemInCart> by mutableStateOf(listOf())
+    open var cart: List<ItemInCart> by mutableStateOf(listOf())
 
     init {
         fetchData()
