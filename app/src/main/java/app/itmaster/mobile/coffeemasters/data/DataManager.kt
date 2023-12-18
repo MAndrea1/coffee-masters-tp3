@@ -50,4 +50,8 @@ open class DataManager: ViewModel() {
         cart = updatedCart
         println(cart)
     }
+
+    fun clearCart() {
+        cart = emptyList()
+    }
 }

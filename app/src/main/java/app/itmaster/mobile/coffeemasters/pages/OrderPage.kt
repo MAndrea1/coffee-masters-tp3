@@ -1,10 +1,8 @@
 package app.itmaster.mobile.coffeemasters.pages
-
 import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,7 +16,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.Button
@@ -28,26 +25,18 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController.current
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -78,7 +67,9 @@ fun OrderPage(dataManager: DataManager, goToMenu: (String)->Unit) {
                     }
                 }
             }
-            SendOrderForm()
+            SendOrderForm(onSend = {
+                dataManager.clearCart()
+            })
         } else {
             Box(
                 contentAlignment = Alignment.Center,
@@ -161,8 +152,9 @@ private const val USER_NAME_KEY = "user_name"
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SendOrderForm () {
+fun SendOrderForm (onSend: ()->Unit) {
     val context = LocalContext.current
+    val focusManager = LocalFocusManager.current
     var text by rememberSaveable { mutableStateOf(loadUserName(context)) }
     Column {
         Text("NAME",
@@ -188,6 +180,8 @@ fun SendOrderForm () {
                 onDone = {
                     if (text.isNotEmpty()) {
                         saveUserName(context, text)
+                        onSend()
+                        focusManager.clearFocus()
                     }
                 }
             )
