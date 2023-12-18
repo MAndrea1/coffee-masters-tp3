@@ -18,16 +18,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import app.itmaster.mobile.coffeemasters.data.DataManager
-import app.itmaster.mobile.coffeemasters.pages.InfoPage
-import app.itmaster.mobile.coffeemasters.pages.MenuPage
-import app.itmaster.mobile.coffeemasters.pages.OffersPage
-import app.itmaster.mobile.coffeemasters.pages.OrderPage
+import app.itmaster.mobile.coffeemasters.Composables.InfoPage
+import app.itmaster.mobile.coffeemasters.Composables.MenuPage
+import app.itmaster.mobile.coffeemasters.Composables.OffersPage
+import app.itmaster.mobile.coffeemasters.Composables.OrderPage
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun App(dataManager: DataManager) {
-    var currentPage = remember { mutableStateOf("order") }
+    var currentPage = remember { mutableStateOf("menu") }
 
     Scaffold(
         topBar = {
@@ -52,7 +52,8 @@ fun App(dataManager: DataManager) {
                     "menu" -> MenuPage(dataManager)
                     "offers" -> OffersPage()
                     "order" -> OrderPage(dataManager, goToMenu = {
-                        currentPage.value = it
+                        println("new order")
+                        currentPage.value = "menu"
                     })
                     "info" -> InfoPage()
                 }

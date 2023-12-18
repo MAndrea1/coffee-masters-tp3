@@ -1,4 +1,4 @@
-package app.itmaster.mobile.coffeemasters.pages
+package app.itmaster.mobile.coffeemasters.Composables
 import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -16,6 +16,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.Button
@@ -29,6 +31,8 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -43,9 +47,14 @@ import androidx.compose.ui.unit.sp
 import app.itmaster.mobile.coffeemasters.data.DataManager
 import app.itmaster.mobile.coffeemasters.data.ItemInCart
 import app.itmaster.mobile.coffeemasters.data.Product
+import kotlinx.coroutines.launch
+import kotlin.random.Random
 
 @Composable
 fun OrderPage(dataManager: DataManager, goToMenu: (String)->Unit) {
+    var snackbarHostState = remember { SnackbarHostState() }
+    val coroutineScope = rememberCoroutineScope()
+
     Column (modifier =
     Modifier
         .fillMaxWidth()
@@ -68,7 +77,11 @@ fun OrderPage(dataManager: DataManager, goToMenu: (String)->Unit) {
                 }
             }
             SendOrderForm(onSend = {
-                dataManager.clearCart()
+                coroutineScope.launch {
+                    println("inside coroutine")
+                    snackbarHostState.showSnackbar("Order Nª ${getOrderNumber()} sent successfully!")
+                    dataManager.clearCart()
+                }
             })
         } else {
             Box(
@@ -99,6 +112,7 @@ fun OrderPage(dataManager: DataManager, goToMenu: (String)->Unit) {
                 }
             )
         }
+        SnackbarHost(hostState = snackbarHostState)
     }
 }
 
@@ -146,55 +160,9 @@ fun OrderCard(item: ItemInCart, index: Int, onRemove: (Product) -> Unit) {
     }
 }
 
-
-private const val SHARED_PREF = "MyPrefs"
-private const val USER_NAME_KEY = "user_name"
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun SendOrderForm (onSend: ()->Unit) {
-    val context = LocalContext.current
-    val focusManager = LocalFocusManager.current
-    var text by rememberSaveable { mutableStateOf(loadUserName(context)) }
-    Column {
-        Text("NAME",
-            modifier = Modifier.padding(vertical = 8.dp),
-            color = MaterialTheme.colorScheme.primary)
-        OutlinedTextField(
-            singleLine = true,
-            value = text,
-            onValueChange = {
-                text = it
-            },
-            label = { Text("Name for order") },
-            shape = RoundedCornerShape(40.dp),
-            colors =
-            TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = MaterialTheme.colorScheme.secondary,
-                unfocusedBorderColor = MaterialTheme.colorScheme.primary,
-                textColor = MaterialTheme.colorScheme.primary),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp),
-            keyboardActions = KeyboardActions(
-                onDone = {
-                    if (text.isNotEmpty()) {
-                        saveUserName(context, text)
-                        onSend()
-                        focusManager.clearFocus()
-                    }
-                }
-            )
-        )
-    }
-}
-
-private fun saveUserName(context: Context, name: String) {
-    context.getSharedPreferences(SHARED_PREF, 0).edit().putString(USER_NAME_KEY, name).apply()
-}
-
-private fun loadUserName(context: Context): String {
-    return context.getSharedPreferences(SHARED_PREF, 0).getString(USER_NAME_KEY, "") ?: ""
+private fun getOrderNumber(): Int {
+    val random = Random(System.currentTimeMillis())
+    return (10000000..99999999).random(random)
 }
 
 @Preview(showBackground = true)

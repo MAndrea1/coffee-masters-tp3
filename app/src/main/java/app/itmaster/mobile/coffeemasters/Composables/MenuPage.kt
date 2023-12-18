@@ -1,4 +1,4 @@
-package app.itmaster.mobile.coffeemasters.pages
+package app.itmaster.mobile.coffeemasters.Composables
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

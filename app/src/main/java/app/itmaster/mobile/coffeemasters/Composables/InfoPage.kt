@@ -1,7 +1,5 @@
-package app.itmaster.mobile.coffeemasters.pages
+package app.itmaster.mobile.coffeemasters.Composables
 
-import android.R
-import android.app.AlertDialog
 import android.view.ViewGroup
 import android.webkit.JsResult
 import android.webkit.WebChromeClient
