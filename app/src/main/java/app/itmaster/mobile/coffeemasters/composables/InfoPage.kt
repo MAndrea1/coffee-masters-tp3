@@ -1,4 +1,4 @@
-package app.itmaster.mobile.coffeemasters.Composables
+package app.itmaster.mobile.coffeemasters.composables
 
 import android.view.ViewGroup
 import android.webkit.JsResult

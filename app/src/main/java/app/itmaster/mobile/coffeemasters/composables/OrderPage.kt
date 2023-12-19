@@ -1,4 +1,5 @@
-package app.itmaster.mobile.coffeemasters.Composables
+package app.itmaster.mobile.coffeemasters.composables
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -13,8 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.Button
@@ -23,8 +22,6 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.Modifier
@@ -35,13 +32,10 @@ import androidx.compose.ui.unit.sp
 import app.itmaster.mobile.coffeemasters.data.DataManager
 import app.itmaster.mobile.coffeemasters.data.ItemInCart
 import app.itmaster.mobile.coffeemasters.data.Product
-import kotlinx.coroutines.launch
 import kotlin.random.Random
 
 @Composable
-fun OrderPage(dataManager: DataManager, goToMenu: (String)->Unit) {
-    var snackbarHostState = remember { SnackbarHostState() }
-    val coroutineScope = rememberCoroutineScope()
+fun OrderPage(dataManager: DataManager, goToMenu: (String)->Unit, finishedOrder: (Int)->Unit) {
 
     Column (modifier =
     Modifier
@@ -65,11 +59,8 @@ fun OrderPage(dataManager: DataManager, goToMenu: (String)->Unit) {
                 }
             }
             SendOrderForm(onSend = {
-                coroutineScope.launch {
-                    println("inside coroutine")
-                    snackbarHostState.showSnackbar("Order Nª ${getOrderNumber()} sent successfully!")
-                    dataManager.clearCart()
-                }
+                val orderNumber = getOrderNumber()
+                finishedOrder(orderNumber)
             })
         } else {
             Box(
@@ -100,7 +91,6 @@ fun OrderPage(dataManager: DataManager, goToMenu: (String)->Unit) {
                 }
             )
         }
-        SnackbarHost(hostState = snackbarHostState)
     }
 }
 
@@ -157,7 +147,7 @@ private fun getOrderNumber(): Int {
 @Composable
 private fun OrderPage_Preview() {
     val mockDataManager = MockDataManager()
-    OrderPage(mockDataManager, goToMenu = { })
+    OrderPage(mockDataManager, goToMenu = { }, finishedOrder = { })
 }
 
 class MockDataManager: DataManager() {
