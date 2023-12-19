@@ -1,13 +1,102 @@
-<!doctype html>
-<title>Soy un HTML</title>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <style>
+           body {
+             background-color: #DDB892;
+             font-family: sans-serif;
+           }
+           h1 {
+             color: #43281C;
+             font-size: 1em;
+             font-weight: 500;
+           }
+           p {
+             color: #333D29;
+             font-size: 1em;
+             margin: 0.5em 0px;
+           }
+           section {
+             text-align: center;
+             margin-top: 20px;
+           }
+           hr {
+             color: #43281C;
+             margin: 1.5em;
+           }
+           #rate-us textarea {
+             padding: 10px;
+             width: 70%;
+             margin-bottom: 10px;
+             resize: vertical; /* Allow vertical resizing */
+             padding: 10px;
+             border: 1px solid #B08968;
+           }
+           #rate-us .star-rating {
+             display: inline-block;
+           }
+           #rate-us .star-rating input {
+             display: none;
+           }
+           #rate-us .star-rating label {
+           font-size: 25px;
+           color: #FFD700;
+           cursor: pointer;
+           }
+           #rate-us .star-rating label:hover,
+           #rate-us .star-rating input:checked ~ label {
+             color: #B08968;
+           }
+           #rate-us .star-rating input:checked + label {
+             color: #FFD700;
+           }
+           #rate-us button {
+             background-color: #43281C;
+             color: #fff;
+             padding: 10px 20px;
+             border: none;
+             cursor: pointer;
+             border-radius: 20px;
+             margin: 0px 10px;
+           }
+        </style>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                // Wait for the DOM to be fully loaded
+                var sendButton = document.getElementById("send-button");
+                var feedbackTextarea = document.getElementById("feedback-textarea");
+                var feedbackStar = document.getElementById("star5");
 
-<style>
-    body {
-        background: salmon
-    }
-</style>
-
-<h1>Contenido Web</h1>
-<p>Yo soy un <b>HTML</b></p>
-
-<button onclick="alert('me apretaste')">Apretame</button>
+                // Add click event listener to the "Send" button
+                sendButton.addEventListener("click", function() {
+                    // Clear the content of the textarea
+                    feedbackTextarea.value = "";
+                    feedbackStar.checked = true;
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <section id="rate-us">
+            <h1>LEAVE YOUR FEEDBACK</h1>
+            <textarea id="feedback-textarea" rows="4" placeholder="Your feedback"></textarea>
+            <div class="star-rating">
+                <input type="radio" id="star1" name="rating" value="1"><label for="star1">★</label>
+                <input type="radio" id="star2" name="rating" value="2"><label for="star2">★</label>
+                <input type="radio" id="star3" name="rating" value="3"><label for="star3">★</label>
+                <input type="radio" id="star4" name="rating" value="4"><label for="star4">★</label>
+                <input type="radio" id="star5" name="rating" value="5"><label for="star5">★</label>
+            </div>
+            <button id="send-button" type="button" onclick="console.log('This is meow')">Send</button>
+        </section>
+        <hr class="solid">
+        <section id="contact-data">
+            <h1>VISIT US</h1>
+            <p>3853 Byrd Lane - Drain</p>
+            <p>+54-957-5134</p>
+        </section>
+    </body>
+</html>
