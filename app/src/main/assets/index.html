@@ -24,8 +24,10 @@
              margin-top: 20px;
            }
            hr {
-             color: #43281C;
-             margin: 1.5em;
+             display: block;
+             border-top: 1px solid #43281C;
+             border-bottom: 1px solid #43281C;
+             margin: 3em;
            }
            #rate-us textarea {
              padding: 10px;
@@ -56,27 +58,21 @@
            #rate-us button {
              background-color: #43281C;
              color: #fff;
-             padding: 10px 20px;
+             padding: 1em 2em;
              border: none;
              cursor: pointer;
-             border-radius: 20px;
-             margin: 0px 10px;
+             border-radius: 2em;
+             margin: 0em 1em;
            }
         </style>
         <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                // Wait for the DOM to be fully loaded
-                var sendButton = document.getElementById("send-button");
+            const handleClick = () => {
                 var feedbackTextarea = document.getElementById("feedback-textarea");
                 var feedbackStar = document.getElementById("star5");
-
-                // Add click event listener to the "Send" button
-                sendButton.addEventListener("click", function() {
-                    // Clear the content of the textarea
-                    feedbackTextarea.value = "";
-                    feedbackStar.checked = true;
-                });
-            });
+                feedbackTextarea.value = "";
+                feedbackStar.checked = true;
+                Android.showToast();
+            }
         </script>
     </head>
     <body>
@@ -90,7 +86,7 @@
                 <input type="radio" id="star4" name="rating" value="4"><label for="star4">★</label>
                 <input type="radio" id="star5" name="rating" value="5"><label for="star5">★</label>
             </div>
-            <button id="send-button" type="button" onclick="console.log('This is meow')">Send</button>
+            <button id="send-button" type="button" onclick="handleClick()">Send</button>
         </section>
         <hr class="solid">
         <section id="contact-data">

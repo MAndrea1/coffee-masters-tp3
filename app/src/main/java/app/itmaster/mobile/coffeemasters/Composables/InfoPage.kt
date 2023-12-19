@@ -6,11 +6,14 @@ import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
+import app.itmaster.mobile.coffeemasters.data.MyJsInterface
 
 
 @Composable
 fun InfoPage() {
+    val context = LocalContext.current
     AndroidView(
         factory = {
         WebView(it).apply {
@@ -31,8 +34,7 @@ fun InfoPage() {
                         return true
                     }
                 }
-
-
+            addJavascriptInterface(MyJsInterface(context), "Android")
             loadUrl("file:///android_asset/index.html")
         }
     })
