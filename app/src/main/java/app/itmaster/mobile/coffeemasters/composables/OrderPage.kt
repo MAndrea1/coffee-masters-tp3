@@ -22,6 +22,10 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.Modifier
@@ -96,6 +100,8 @@ fun OrderPage(dataManager: DataManager, goToMenu: (String)->Unit, finishedOrder:
 
 @Composable
 fun OrderCard(item: ItemInCart, index: Int, onRemove: (Product) -> Unit) {
+    var quantity by remember { mutableIntStateOf(item.quantity) }
+
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
@@ -104,7 +110,7 @@ fun OrderCard(item: ItemInCart, index: Int, onRemove: (Product) -> Unit) {
     ){
         Row()
         {
-        Text("${item.quantity}x",
+        Text("$quantity x",
             color = MaterialTheme.colorScheme.primary)
         Spacer(modifier = Modifier.size(10.dp))
         Text(
@@ -113,7 +119,7 @@ fun OrderCard(item: ItemInCart, index: Int, onRemove: (Product) -> Unit) {
         }
         Row()
         {
-            Text("${item.product.price * item.quantity}",
+            Text("${item.product.price * quantity}",
                 color = Color.Black)
             Spacer(modifier = Modifier.size(15.dp))
             Image(Icons.Outlined.Delete,
@@ -124,6 +130,7 @@ fun OrderCard(item: ItemInCart, index: Int, onRemove: (Product) -> Unit) {
                     .size(24.dp)
                     .clickable {
                         onRemove(item.product)
+                        quantity -= 1
                     }
             )
         }
